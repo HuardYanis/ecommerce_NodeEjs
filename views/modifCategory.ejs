@@ -1,0 +1,43 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+<body>
+    <%- include ('header.ejs') %>
+    <% if(locals.category) { %>
+        <ul class="list-group">
+        <%  category.forEach(function(cate) { %>
+          
+        <li class="list-group-item d-flex justify-content-between align-items-center"> 
+            <form action="/modifCategory" method="POST" class="form-inline">
+                <input type="text" name="catename" id="cate" value="<%= cate.name %>" class="form-control mb-2 mr-sm-2">
+                <input type="hidden" name="id" value="<%= cate.id %>">
+                <button type="submit" class="btn btn-primary mb-2">Modifier</button>
+            </form> 
+            <a href="/delete/<%= cate.id %>" class="btn btn-danger">Supprimer</a>
+        </li>
+          
+          <% })  %>
+        </ul>
+     <% } %>
+
+     <div id="ajouterCategory">
+        <form action="/createCategory" method="POST" class="form-inline mt-3">
+          <div class="form-group mb-2">
+            <label for="category" class="mr-2">Nom de la catégorie :</label>
+            <input type="text" name="category" id="category" class="form-control" >
+          </div>
+          <button type="submit" class="btn btn-primary mb-2 ml-2">Ajouter</button>
+        </form>
+      
+      </div>
+
+    
+</body>
+</html>

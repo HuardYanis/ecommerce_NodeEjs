@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <title>Liste des commandes</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <%- include ('header.ejs') %>
+  <div class="container">
+
+    <h1>Liste des commandes</h1>
+<% if(locals.commande.length > 0) { %>
+
+
+    <% commande.forEach((command) => { %>
+
+      <div class="card my-3">
+        <div class="card-header">
+          command #<%= command._id %>
+        </div>
+        <div class="card-body">
+          <p>Utilisateur: <%= command.user.firstname %> <%= command.user.lastname %></p>
+          <p>Produits:</p>
+          <ul>
+            <% command.products.forEach((product) => { %>
+              <li><%= product.quantity %> x <%= product.product.name %> (<%= product.product.price %>€)</li>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
+
+    <% }) %>
+
+    <% }else { %>
+<p>pas de commande</p>
+      <% } %>
+
+  </div>
+
+</body>
+</html>

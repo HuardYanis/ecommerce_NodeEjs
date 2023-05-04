@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <form action="/enregistrer" method="POST">
+            <div class="form-group">
+                <label for="email">Adresse email</label>
+                <input type="email" name="email" id="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="firstname">Prénom</label>
+                <input type="text" name="firstname" id="firstname" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="lastname">Nom de famille</label>
+                <input type="text" name="lastname" id="lastname" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="adresse">Adresse</label>
+                <input type="text" name="adresse" id="adresse" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Numéro de téléphone</label>
+                <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" required>
+                <small class="form-text text-muted">Exemple : +33612345678</small>
+              </div>
+            <button type="submit" class="btn btn-primary">Valider</button>
+        </form>
+        <a href="/connection">Déjà un compte ?</a>
+    </div>
+    <% if(locals.emailused) { %>
+
+        <div class="alert alert-danger">
+            <strong>Email existant</strong>
+        </div>
+    <% } %>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj4W_xx4hCHbgloS21YLOZFg7eVo7591I&libraries=places"></script>
+    <script>
+      var input = document.getElementById("adresse");
+      var autocomplete = new google.maps.places.Autocomplete(input);
+    </script>
+</body>
+</html>

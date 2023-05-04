@@ -1,0 +1,219 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>Document</title>
+  <style>
+    #box {
+      width: 800px;
+      height: fit-content;
+
+    }
+
+    #modifMagasin {
+      display: none;
+    }
+
+    #modifMagasin form {
+      display: flex;
+      flex-direction: column;
+      width: auto;
+    }
+
+    #ajouterCategory {
+      display: none;
+    }
+
+    #ajouterCategory form {
+      display: flex;
+      flex-direction: column;
+      width: auto;
+    }
+
+    #topsite {
+      background-image: url('<%= magasin.banner %>');
+      background-size: cover;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: 300px;
+    }
+
+    .mainconteneur {
+      width: 1024px;
+      height: fit-content;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    #titre {
+      text-align: center;
+    }
+
+    .card-title {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mainconteneur">
+
+    <%- include ('header.ejs') %>
+      <% if(locals.session ) { %>
+
+        <h1 id="titre" class="display-4">
+          <%= magasin.title %>
+        </h1>
+        <% if(locals.magasin ) { %>
+
+          <div id="topsite">
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title">Description :</h2>
+              <p class="card-text lead">
+                <%= magasin.description %>
+              </p>
+            </div>
+            <div class="card-footer">
+              <h2 class="card-title">Emplacement :</h2>
+              <div id="map" style="height: 200px;"></div>
+            </div>
+          </div>
+
+
+          <% if(locals.category && locals.category.length> 0) { %>
+            <form method="post" action="/affiche" class="form-inline">
+              <div class="form-group">
+                <select name="idcate" id="idcate" class="form-control">
+                  <% category.forEach(function(cate) { %>
+                    <option value="<%= cate._id %>">
+                      <%= cate.name %>
+                    </option>
+                    <% }) %>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            <% if(locals.test) { %>
+              <p>
+                <%= test %>
+              </p>
+              <% } %>
+                <% if(locals.product) { %>
+                  <div class="row">
+                    <% product.forEach(function(prod) { %>
+                      <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                          <img class="card-img-top" src="/product/<%= prod.image %>" alt="<%= prod.name %>">
+                          <div class="card-body">
+                            <h5 class="card-title"><a href="/ficheproduct/<%= prod.id %>">
+                                <%= prod.name %>
+                              </a></h5>
+                            <p class="card-text">
+                              <%= prod.description %>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="form-group">
+                                <label for="quantity">Quantité :</label>
+                                <input type="number" class="form-control" id="quantity" name="quantity" value=1 min=1>
+                              </div>
+                              <span class="text-muted">
+                                <%= prod.price %> €
+                              </span>
+                              <a href="#" class="btn btn-primary" onclick="addToCart('<%= prod._id %>')">Ajouter au
+                                panier</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <% }) %>
+                  </div>
+                  <% } %>
+
+
+                    <% } %>
+
+
+                        <script>
+
+
+                          function initMap() {
+                            // Récupérez l'adresse depuis la variable magasin.description
+                            var address = '<%= magasin.adresse %>';
+
+                            // Créez une instance du géocodeur de Google Maps
+                            var geocoder = new google.maps.Geocoder();
+
+                            // Utilisez le géocodeur pour obtenir les coordonnées de l'adresse
+                            geocoder.geocode({ 'address': address }, function (results, status) {
+                              if (status === 'OK') {
+                                var latLng = results[0].geometry.location;
+
+                                // Créez une nouvelle carte Google Maps
+                                var map = new google.maps.Map(document.getElementById('map'), {
+                                  zoom: 15,
+                                  center: latLng
+                                });
+
+                                // Ajoutez un marqueur à l'emplacement de l'adresse
+                                var marker = new google.maps.Marker({
+                                  position: latLng,
+                                  map: map,
+                                  title: '<%= magasin.title %>'
+                                });
+                              } else {
+                                alert('Geocode was not successful for the following reason: ' + status);
+                              }
+                            });
+                          }
+
+                          function addToCart(productId) {
+                            var quantity = document.getElementById("quantity").value;
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", "/ajouterpanier", true);
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            xhr.onreadystatechange = function () {
+                              if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                                // Mettre à jour le nombre d'articles dans le panier
+                                var cartCount = document.getElementById("cart-count");
+                                cartCount.innerText = parseInt(cartCount.innerText) + parseInt(quantity);
+                              }
+                            }
+                            xhr.send(JSON.stringify({ productId: productId, quantity: quantity }));
+                          }
+
+                        </script>
+
+                        <script async defer
+                          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj4W_xx4hCHbgloS21YLOZFg7eVo7591I&callback=initMap"></script>
+
+                        <% }else { %>
+                          <p>probleme</p>
+                          <% } %>
+
+
+                  <% } else { %> 
+                    
+                      <a href="/connection">Veuillez vous connecter</a>  
+                    
+                  <% } %>
+  </div>
+</body>
+
+</html>

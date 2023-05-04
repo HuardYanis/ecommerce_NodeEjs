@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>Panier</title>
+</head>
+<body>
+  <%- include ('header.ejs') %>
+  <div class="container my-5">
+    <h1 class="text-center">Produits dans le panier :</h1>
+     <% if(locals.vide === "vide"){ %> 
+            <a href="/Magasin" class="btn btn-primary btn-block mt-3">selectionner des produits</a>
+
+      <% } else { %> 
+        
+        
+        
+        
+        
+        
+        
+        <% if (panier.products.length === 0) { %>
+          <p class="text-center">Aucun produit dans le panier pour l'instant.</p>
+        <% } else { %>
+          <div class="row">
+            <div class="col-lg-8">
+              <ul class="list-group">
+                <% panier.products.forEach((products) => { %>
+                  <li class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-md-3">
+                        <img src="/product/<%= products.product.image %>" alt="<%= products.product.name %>" class="img-fluid">
+                      </div>
+                      <div class="col-md-6">
+                        <h2 class="h5"><%= products.product.name %></h2>
+                        <p>Prix : <%= products.product.price %> €</p>
+                        <p>Quantité : <%= products.quantity %></p>
+                      </div>
+                      <div class="col-md-3 text-right">
+                        <a href="/retirerpanier/<%= products.product.id %>" class="btn btn-outline-danger btn-sm">Retirer du panier</a>
+                      </div>
+                    </div>
+                  </li>
+                <% }) %>
+              </ul>
+            </div>
+            <div class="col-lg-4">
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title">Total</h3>
+                  <h4><%= total %> €</h4>
+                  <form action="/validerpanier" method="post">
+                    <div class="form-group">
+                      <label for="retrait_date">Date de retrait:</label>
+                      <input type="date" id="retrait_date" name="retrait_date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="retrait_time">Heure de retrait:</label>
+                      <select id="retrait_time" name="retrait_time" class="form-control" required>
+                        <option value="">Sélectionnez une heure</option>
+                        <option value="8:00">8h00</option>
+                        <option value="9:00">9h00</option>
+                        <option value="10:00">10h00</option>
+                        <option value="11:00">11h00</option>
+                        <option value="12:00">12h00</option>
+                        <option value="13:00">13h00</option>
+                        <option value="14:00">14h00</option>
+                        <option value="15:00">15h00</option>
+                        <option value="16:00">16h00</option>
+                        <option value="17:00">17h00</option>
+                      </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Confirmer</button>
+                  </form>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+        <% } %>
+
+  </div>
+</body>
+</html>

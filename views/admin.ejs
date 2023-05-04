@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <% include ('header.ejs') %>
+    <% if(locals.session && session.admin === true) { %>
+    <div class="container my-5">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <h2 class="mb-3">Modifier le magasin</h2>
+          <form action="/createMagasin" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="title">Titre du magasin</label>
+              <input type="text" class="form-control" name="title" id="title"  required />
+            </div>
+            <div class="form-group">
+              <label for="banner">Bannière</label>
+              <input type="file" class="form-control-file" name="banner" id="banner" />
+            </div>
+            <div class="form-group">
+              <label for="adresse">Adresse du magasin</label>
+              <input type="text" class="form-control" name="adresse" id="adresse"  required />
+            </div>
+            <div class="form-group">
+              <label for="description">Description du magasin</label>
+              <textarea class="form-control" name="description" id="description" cols="30" rows="10" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj4W_xx4hCHbgloS21YLOZFg7eVo7591I&libraries=places"></script>
+    <script>
+      var input = document.getElementById("adresse");
+      var autocomplete = new google.maps.places.Autocomplete(input);
+    </script>
+    
+
+    <% } else {  %>
+        
+        <p>Vous n'etes pas admin</p>
+
+   <% } %>
+ 
+</body>
+</html>

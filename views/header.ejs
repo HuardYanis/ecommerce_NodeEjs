@@ -1,0 +1,48 @@
+<header>
+    <% locals.session %>
+    <% locals.magasin %>
+    <% locals.category %>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <% if (session.admin == true) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/modifmagasin">Modifier Magasin</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/category">Catégorie: Ajouter/Modifier/Supprimer</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/product">Produit: Ajouter/Modifier/Supprimer</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Magasin">Magasin</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/mescommandes">Mes commandes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Se Deconnecter</a>
+            </li>
+        
+         <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/monpanier">Panier</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Magasin">Magasin</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/mescommandes">Mes commandes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Se Deconnecter</a>
+            </li>  
+          <% } %>
+        </ul>
+      </div>
+    </nav>
+  </header>

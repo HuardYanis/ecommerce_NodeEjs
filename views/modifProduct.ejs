@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+<body>
+    <%- include ('header.ejs') %>
+    <% if(locals.category.length > 0) { %>
+
+    <div class="container">
+        <h1>Ajouter un produit</h1>
+        <form action="/createProduct" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Nom du produit</label>
+                <input type="text" class="form-control" name="name" id="name">
+            </div>
+            <div class="form-group">
+                <label for="price">Prix</label>
+                <input type="number" class="form-control" name="price" id="price">
+            </div>
+            <div class="form-group">
+                <label for="description">Description du produit</label>
+                <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="image">Photo</label>
+                <input type="file" class="form-control-file" name="image" id="image">
+            </div>
+            <div class="form-group">
+                <label for="category">Catégorie</label>
+                <select class="form-control" name="category" id="category">
+                    <%  category.forEach(function(cate) { %>
+                        <option value="<%= cate.id %>"><%= cate.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Valider</button>
+        </form>
+
+        <% if(locals.product){ %>
+            <h2>Liste des produits</h2>
+            <ul>
+                <%  product.forEach(function(prod) { %>
+                    <li><a href="/ficheproduct/<%= prod._id %>"><%= prod.name %></a></li>
+                <% }) %>    
+            </ul>
+        <% } %>  
+    </div>
+
+    <% }else{ %> 
+
+        <div class="alert alert-danger">
+            <strong>Creer d'abord des categorie</strong>
+        </div>
+
+    <% } %> 
+</body>
+</html>

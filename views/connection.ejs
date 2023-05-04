@@ -1,0 +1,50 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Page de connexion</title>
+</head>
+
+<body>
+    <div class="container my-5">
+        <form action="/seconnecte" method="POST">
+            <div class="form-group">
+                <label for="email">Adresse e-mail :</label>
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Se connecter</button>
+            <a href="/" class="btn btn-link">S'inscrire</a>
+        </form>
+    </div>
+    <% if(locals.inscriptionsuccess) { %>
+
+        <div class="alert alert-success">
+            <strong>Success! compte creer</strong>
+        </div>
+    <% } %>
+
+    <% if(locals.emailinexistant) { %>
+
+        <div class="alert alert-danger">
+            <strong>Email inexistant</strong>
+        </div>
+    <% } %>
+
+    <% if(locals.mauvaismdp) { %>
+
+        <div class="alert alert-danger">
+            <strong>Mauvais mot de passe</strong>
+        </div>
+    <% } %>
+</body>
+
+</html>
